@@ -9,6 +9,11 @@ const router = Router()
 
 router.post("/", userController.createUserController )
 router.get("/",userController.createUserControllerForget)
+router.get("/api/users/:id",userController.createUserControlForGetSingle)
+router.put("/api/users/:id",userController.UserControllerForPut)
+router.delete("/api/users/:id",userController.UserControllerForDelete)
+
+
 
 
 export const userRoute = router

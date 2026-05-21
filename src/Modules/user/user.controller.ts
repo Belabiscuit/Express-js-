@@ -26,8 +26,7 @@ const createUserController = async(req:Request,res:Response)=>{
 
 const createUserControllerForget =async(req:Request,res:Response)=>{
       try {
-        const result = await pool.query(`
-            SELECT * FROM users`)
+        const result = await Service.UserServiceForGet()
 
         res.status(200).json({
             success:true,
@@ -43,7 +42,106 @@ const createUserControllerForget =async(req:Request,res:Response)=>{
         })
       }
 }
+
+
+const createUserControlForGetSingle=async(req:Request,res:Response)=>{
+    const {id}=req.params;
+    try {
+        const result = await Service.UserServiceForGetSingle(id)
+
+            
+        if(result.rows.length === 0){
+            res.status(404).json({
+                success:false,
+                message:"Not Found!",
+
+            })
+        } 
+        
+        res.status(200).json({
+            success:true,
+            message:"User Retrive Successfully!",
+            data:result.rows[0],
+        })    
+
+    } catch (error:any) {
+             res.status(404).json({
+            success:false,
+            message:error.message,
+            error:error,
+
+        })
+        
+    }
+}
+
+
+const UserControllerForPut = async(req:Request,res:Response)=>{
+    const {id}=req.params;
+  
+    try {
+         const result = await Service.UserServiceForPut(req.body,id as string)
+
+             if(result.rowCount === 0){
+            res.status(404).json({
+                success:false,
+                message:"Not Found!",
+
+            })
+        } 
+        
+        res.status(200).json({
+            success:true,
+            message:"User Information Updated Successfully!",
+            data:result.rows[0],
+        })    
+
+    } catch (error:any) {
+        res.status(500).json({
+        success: false,
+        message:error.message,
+        }
+        )
+    }
+}
+  
+const UserControllerForDelete =async(req:Request,res:Response)=>{
+    const {id} = req.params;
+    try {
+        const result = await Service.UserServiceForDelete(id as string)
+
+
+             if(result.rowCount === 0){
+            res.status(404).json({
+                success:false,
+                message:"Not Found!",
+
+            })
+        } 
+        
+        res.status(200).json({
+            success:true,
+            message:"User Information Delated Successfully!",
+            data:result.rows[0],
+        })    
+
+    } catch (error:any) {
+        res.status(500).json({
+            success:false,
+            message:error.message,
+
+        })
+        
+    }
+
+}
+
+
+
 export const userController={
     createUserController,
-    createUserControllerForget
+    createUserControllerForget,
+    createUserControlForGetSingle,
+    UserControllerForPut,
+    UserControllerForDelete
 }
