@@ -8,11 +8,15 @@ import { configDotenv } from "dotenv";
 import { pool } from "./db";
 import config from "./config";
 import { userRoute } from "./Modules/user/user.route";
+import { profileRouter } from "./Modules/Profile/profile.route";
+import { authRouter } from "./Modules/Auth/auth.route";
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({extended:true}))
   
 app.use("/api/users",userRoute)
+app.use ("/api/profiles",profileRouter)
+app.use("/api/auth",authRouter)
 
 app.get('/', (req:Request, res:Response) => {
 //   res.send('Hello World!')
